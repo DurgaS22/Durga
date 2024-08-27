@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node {
+    int data;             
+    struct Node* left;     
+    struct Node* right;   
+} Node;
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node)); // Allocate memory for a new node
+    if (newNode == NULL) { // Check for memory allocation failure
+        printf("Error allocating memory\n");
+        exit(1);
+    }
+    newNode->data = data; // Set the data for the new node
+    newNode->left = NULL; // Initialize left child as NULL
+    newNode->right = NULL; // Initialize right child as NULL
+    return newNode; // Return the newly created node
+}
+e
+Node* insertNode(Node* root, int data) {
+    if (root == NULL) { // If the tree is empty, create the root node
+        return createNode(data);
+    }
+    
+   
+    if (data < root->data) {
+        root->left = insertNode(root->left, data);
+    } else if (data > root->data) {
+        root->right = insertNode(root->right, data);
+    }
+ 
+    return root; // Return the (unchanged) root pointer
+}
+
+
+void inorderTraversal(Node* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left); // Visit left subtree
+        printf("%d ", root->data);    // Print node data
+        inorderTraversal(root->right); // Visit right subtree
+    }
+}
+
+
+void freeTree(Node* root) {
+    if (root != NULL) {
+        freeTree(root->left);  // Free left subtree
+        freeTree(root->right); // Free right subtree
+        free(root);            // Free current node
+    }
+}
+
+int main() {
+    Node* root = NULL; // Initialize the root of the tree as NULL
+    root = insertNode(root, 5);
+    insertNode(root, 3);
+    insertNode(root, 7);
+    insertNode(root, 2);
+    insertNode(root, 4);
+    insertNode(root, 6);
+    insertNode(root, 8);
+
+
+    printf("In-order traversal: ");
+    inorderTraversal(root);
+    printf("\n");
+
+  
+    freeTree(root);
+
+    return 0;
+}
